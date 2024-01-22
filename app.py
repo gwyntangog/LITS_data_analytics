@@ -15,6 +15,7 @@ external_stylesheets = [
             "http://fonts.googleapis.com/css?family=Roboto"
         ),
         "rel": "stylesheet",
+        "type": 'text/css'
     },
 ]
 app = Dash(__name__, external_stylesheets=external_stylesheets)
