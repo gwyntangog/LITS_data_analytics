@@ -110,5 +110,5 @@ def map_function(cleaned_data, sector):
        else:
               choropleth_title = 'LiTS per Country (All Sectors)'
        fig = px.choropleth(data_frame = choropleth_data, locations='ISO Alpha', color='Number',animation_frame = 'Time',hover_name='Country',
-                            projection='natural earth', title=choropleth_title,color_continuous_scale=px.colors.sequential.Reds, range_color = (1,maximum))
+                            projection='natural earth', title=choropleth_title,color_continuous_scale=px.colors.sequential.Reds, range_color = (0,maximum))
        return fig
