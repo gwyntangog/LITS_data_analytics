@@ -1,7 +1,3 @@
-import sys
-if sys.version_info[0:2] != (3, 10):
-    raise Exception('Requires python 3.10')
-
 # app.py
 from cleaning_functions.clean_data import clean_data
 from cleaning_functions.map_function import map_function
