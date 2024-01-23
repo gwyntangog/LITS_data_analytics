@@ -9,6 +9,7 @@ import plotly.express as px
 
 data = clean_data("LiTS Tracker - 2023.xlsx")
 app = Dash(__name__,)
+server = app.server
 app.title = "LiTS Data Analyst"
 # Reference for regional division: https://unstats.un.org/unsd/methodology/m49/
 africa = ['Sub Saharan Africa', 'Algeria','Egypt','Libya','Morocco','Sudan','Tunisia','Western Sahara',
