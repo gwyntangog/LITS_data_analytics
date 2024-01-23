@@ -61,6 +61,10 @@ def map_function(cleaned_data, sector):
        compressed['Country/Region'] = compressed['Country/Region'].replace('Turkey','Türkiye')
        compressed['Country/Region'] = compressed['Country/Region'].replace('Congo [DRC]','Congo, Democratic Republic of the')
 
+       northern_america_copy = list(map(lambda x: x.replace('United States', 'United States of America'), northern_america))
+       europe_copy = list(map(lambda x: x.replace('Czech Republic', 'Czechia'), europe))
+       europe_copy = list(map(lambda x: x.replace('Republic of Moldova', 'Moldova, Republic of'), europe_copy))
+       europe_copy = list(map(lambda x: x.replace('United Kingdom', 'United Kingdom of Great Britain and Northern Ireland'), europe_copy))
        #Making DataFrame
        compressed['Country/Region'] = compressed['Country/Region'].str.upper()
        unique_countries = compressed['Country/Region'].unique()
@@ -69,10 +73,10 @@ def map_function(cleaned_data, sector):
        iso_alpha_list_out = []
        time_list_out=[]
        number_list_out = []
+       ###CLEANING 1
        for country in unique_countries:
               for time in time_list:
                      if country == 'NORTH AMERICA':
-                            northern_america_copy = list(map(lambda x: x.replace('United States', 'United States of America'), northern_america))
                             for sub_country in northern_america_copy[1:]:
                                    sub_country = sub_country.upper()
                                    dataframe = compressed[np.logical_and(compressed['Country/Region']=='NORTH AMERICA', compressed['When']==time)]
@@ -82,9 +86,6 @@ def map_function(cleaned_data, sector):
                                    number_list_out.append(number)
                                    iso_alpha_list_out.append(countries_by_apolitical_name[f'{sub_country}'].alpha3)
                      elif country == 'EUROPE':
-                            europe_copy = list(map(lambda x: x.replace('Czech Republic', 'Czechia'), europe))
-                            europe_copy = list(map(lambda x: x.replace('Republic of Moldova', 'Moldova, Republic of'), europe_copy))
-                            europe_copy = list(map(lambda x: x.replace('United Kingdom', 'United Kingdom of Great Britain and Northern Ireland'), europe_copy))
                             for sub_country in europe_copy[1:]:
                                    sub_country = sub_country.upper()
                                    dataframe = compressed[np.logical_and(compressed['Country/Region']=='EUROPE', compressed['When']==time)]
@@ -103,7 +104,26 @@ def map_function(cleaned_data, sector):
        choropleth_dict = {
               'Country': country_list_out, 'Time': time_list_out, 'ISO Alpha':iso_alpha_list_out,'Number':number_list_out
        }
-       choropleth_data = pd.DataFrame(choropleth_dict)
+       intermediate_data = pd.DataFrame(choropleth_dict)
+       ###CLEANING 2
+       country_list = intermediate_data['Country'].unique()
+       time_list = intermediate_data['Time'].unique()
+       country_out = []
+       time_out = []
+       iso_out = []
+       count_out = []
+       for country in country_list:
+              for time in time_list:
+                     dataframe = intermediate_data[np.logical_and(intermediate_data['Country']==country, intermediate_data['Time']==time)]
+                     count = dataframe['Number'].sum()
+                     country_out.append(country)
+                     time_out.append(time)
+                     iso_out.append(countries_by_apolitical_name[f'{country}'].alpha3)
+                     count_out.append(count)
+       final_dict = {
+              'Country': country_out, 'Time': time_out, 'ISO Alpha':iso_out,'Number':count_out
+       }
+       choropleth_data = pd.DataFrame(final_dict)
        maximum = choropleth_data['Number'].max()
        if sector:
               choropleth_title = f'LiTS per Country ({sector})'
