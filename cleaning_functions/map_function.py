@@ -74,25 +74,25 @@ def map_function(cleaned_data, sector):
                      if country == 'NORTH AMERICA':
                             northern_america_copy = list(map(lambda x: x.replace('United States', 'United States of America'), northern_america))
                             for sub_country in northern_america_copy[1:]:
-                                   country = sub_country.upper()
+                                   sub_country = sub_country.upper()
                                    dataframe = compressed[np.logical_and(compressed['Country/Region']=='NORTH AMERICA', compressed['When']==time)]
                                    number = dataframe.shape[0]
-                                   country_list_out.append(country)
+                                   country_list_out.append(sub_country)
                                    time_list_out.append(time)
                                    number_list_out.append(number)
-                                   iso_alpha_list_out.append(countries_by_apolitical_name[f'{country}'].alpha3)
+                                   iso_alpha_list_out.append(countries_by_apolitical_name[f'{sub_country}'].alpha3)
                      elif country == 'EUROPE':
                             europe_copy = list(map(lambda x: x.replace('Czech Republic', 'Czechia'), europe))
                             europe_copy = list(map(lambda x: x.replace('Republic of Moldova', 'Moldova, Republic of'), europe_copy))
                             europe_copy = list(map(lambda x: x.replace('United Kingdom', 'United Kingdom of Great Britain and Northern Ireland'), europe_copy))
                             for sub_country in europe_copy[1:]:
-                                   country = sub_country.upper()
+                                   sub_country = sub_country.upper()
                                    dataframe = compressed[np.logical_and(compressed['Country/Region']=='EUROPE', compressed['When']==time)]
                                    number = dataframe.shape[0]
-                                   country_list_out.append(country)
+                                   country_list_out.append(sub_country)
                                    time_list_out.append(time)
                                    number_list_out.append(number)
-                                   iso_alpha_list_out.append(countries_by_apolitical_name[f'{country}'].alpha3)
+                                   iso_alpha_list_out.append(countries_by_apolitical_name[f'{sub_country}'].alpha3)
                      else:
                             dataframe = compressed[np.logical_and(compressed['Country/Region']==country, compressed['When']==time)]
                             number = dataframe.shape[0]
