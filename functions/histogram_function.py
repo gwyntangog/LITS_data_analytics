@@ -10,7 +10,7 @@ def histogram_function(data, region, year):
     ###Imports
     import pandas as pd
     import plotly.express as px
-    from cleaning_functions.regional_division import regional_division
+    from functions.regional_division import regional_division
     ####Regional Divisions
     africa, asia, europe, latin_america, northern_america, oceania = regional_division()
     region_mapping = {'Africa': africa, 'Asia': asia, 'Europe': europe, 'Latin America and the Caribbean': latin_america, 'Northern America': northern_america, 'Oceania': oceania}

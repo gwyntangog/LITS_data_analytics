@@ -11,9 +11,9 @@ def map_function(cleaned_data, sector, year):
        import numpy as np
        import plotly.express as px
        from iso3166 import countries_by_apolitical_name
-       from cleaning_functions.sector_filter import sector_filter
-       from cleaning_functions.iso3166_conversion_function import iso3166_conversion_function
-       from cleaning_functions.regional_division import regional_division
+       from functions.sector_filter import sector_filter
+       from functions.iso3166_conversion_function import iso3166_conversion_function
+       from functions.regional_division import regional_division
 
        #Sector filter
        if sector == None:
