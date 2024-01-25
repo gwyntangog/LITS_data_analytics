@@ -7,7 +7,6 @@ import matplotlib.pyplot as plt
 import plotly.express as px
 
 
-data = clean_data("LiTS Tracker - 2023.xlsx")
 app = Dash(__name__,)
 server = app.server
 app.title = "LiTS Data Analyst"
@@ -48,7 +47,7 @@ regions = ['All Regions', 'Africa','Asia','Europe','Latin America and the Caribb
 pie_dividers = ['Type','Level of Support']
 sectors = ["All Sectors", 'Transparency and accountability / open government','Human rights / humanitarian', 'Philanthropy', 'Environmental justice', 'Civic Tech', 'Health', 'Sex worker rights', 'Gender-based violence',
            'Digital Security', 'Mental Health','Legal Empowerment','Communications','Gender','Racial Justice','Migration Justice','Domestic workers rights']
-
+years = ["2021", "2022", "2023"]
 app.layout = html.Div(
     ###HEADER
     children=[
@@ -75,6 +74,21 @@ app.layout = html.Div(
                                 for region in regions
                             ],
                             value="All Regions",
+                            clearable=False,
+                            className="dropdown",
+                        ),
+                    ]
+                ),
+                html.Div(
+                    children=[
+                        html.Div(children="Year", className="menu-title"),
+                        dcc.Dropdown(
+                            id="year1",
+                            options=[
+                                {"label": year1, "value": year1}
+                                for year1 in years
+                            ],
+                            value="2023",
                             clearable=False,
                             className="dropdown",
                         ),
@@ -114,6 +128,21 @@ app.layout = html.Div(
                         ),
                     ]
                 ),
+                html.Div(
+                    children=[
+                        html.Div(children="Year", className="menu-title"),
+                        dcc.Dropdown(
+                            id="year2",
+                            options=[
+                                {"label": year2, "value": year2}
+                                for year2 in years
+                            ],
+                            value="2023",
+                            clearable=False,
+                            className="dropdown",
+                        ),
+                    ]
+                ),
             ],
             className="menu",
         ),
@@ -148,6 +177,21 @@ app.layout = html.Div(
                         ),
                     ]
                 ),
+                html.Div(
+                    children=[
+                        html.Div(children="Year", className="menu-title"),
+                        dcc.Dropdown(
+                            id="year3",
+                            options=[
+                                {"label": year3, "value": year3}
+                                for year3 in years
+                            ],
+                            value="2023",
+                            clearable=False,
+                            className="dropdown",
+                        ),
+                    ]
+                ),
             ],
             className="menu",
         ),
@@ -173,9 +217,14 @@ app.layout = html.Div(
     Output("sector-map", "figure"),
     Input("region-filter", "value"),
     Input("pie-filter", "value"),
-    Input("sector-filter","value")
+    Input("sector-filter","value"),
+    Input("year1","value"),
+    Input("year2", "value"),
+    Input("year3", "value")
 )
-def update_charts(region, pie_div, sector):
+def update_charts(region, pie_div, sector, year1, year2, year3):
+    ###Getting data:
+    data = clean_data(f"{year1}.xlsx")
     ###HISTOGRAM
     if region == 'All Regions':
         filtered_data = data
@@ -183,6 +232,10 @@ def update_charts(region, pie_div, sector):
         filtered_data = data.loc[data['Country/Region'].isin(region_mapping[region])]
         filtered_data = filtered_data.dropna(subset = ['Country/Region'])
     region_histogram_figure = px.histogram(filtered_data,x="When", nbins = 12, title = f"Distribution of Clients in {region} Over Time")
+    region_histogram_figure = region_histogram_figure.update_layout(yaxis_title = "Count")
+
+    ###Getting data:
+    data = clean_data(f"{year2}.xlsx")
     ###PIE CHART
     unique_types = data[f'{pie_div}'].unique()
     count_list = []
@@ -194,6 +247,8 @@ def update_charts(region, pie_div, sector):
         percentage = round(count/total*100,1)
         label_list.append(f"{i} ({percentage}%)")
     pie_divided_figure = px.pie(values = count_list, names = label_list, title = f"Distribution of Clients by {pie_div}")
+    ###Getting data:
+    data = clean_data(f"{year3}.xlsx")
     ###MAP CHART
     if sector == "All Sectors":
         sector = None

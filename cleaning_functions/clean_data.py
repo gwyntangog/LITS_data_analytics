@@ -33,7 +33,7 @@ def clean_data(filename,sheetname = "Internal Reporting Form"):
        data = data.rename(columns={"How did the LiTS happen? Check all that apply": "How"})
        #12: When did the LiTS occur?
        data = data.rename(columns={"When did the LiTS occur? ": "When"})
-       data['When'] = pd.to_datetime(data['When'])
+       data['When'] = pd.to_datetime(data['When']).dt.strftime('%m-%Y')
        #13: Phase Supported
        data = data.rename(columns={"During which phase of the project did we primarily provide support?": "Phase Supported"})
        #14: Output Type
@@ -41,9 +41,9 @@ def clean_data(filename,sheetname = "Internal Reporting Form"):
        #15: Information Type
        data = data.rename(columns={"What type of information did you provide? Check all that apply": "Information Type"})
        #16: Level of Support
-       data['Level of Support'] = data['Level of Support'].replace('2 - medium (you did all of the "light" activities, plus pro-bono work including research, spending time making connections, or providing inputs to a document)', 2)
-       data['Level of Support'] = data['Level of Support'].replace('1 - light (you spent some time talking about an issue, and provided suggestions or connections)', 1)
-       data['Level of Support'] = data['Level of Support'].replace('3 - heavy (you spent up to one full day of work or more; if more, select "Other" and type in the number of days you spent)', 3)
+       data['Level of Support'] = data['Level of Support'].replace('2 - medium (you did all of the "light" activities, plus pro-bono work including research, spending time making connections, or providing inputs to a document)', 'Medium')
+       data['Level of Support'] = data['Level of Support'].replace('1 - light (you spent some time talking about an issue, and provided suggestions or connections)', 'Light')
+       data['Level of Support'] = data['Level of Support'].replace('3 - heavy (you spent up to one full day of work or more; if more, select "Other" and type in the number of days you spent)', 'Heavy')
        #17: Brief Description
        data = data.rename(columns={"In your own words, briefly describe the problem they are trying to solve or challenge that they are facing.": "Brief Description"})
        #18: Feedback (Y/N)

@@ -12,8 +12,6 @@ def map_function(cleaned_data, sector):
        import numpy as np
        import plotly.express as px
        from iso3166 import countries_by_apolitical_name
-       # from cleaning_functions.clean_data import clean_data
-       # cleaned_data = clean_data(filename)
        from cleaning_functions.sector_filter import sector_filter
        if sector == None:
               pass
@@ -22,9 +20,9 @@ def map_function(cleaned_data, sector):
        # Reference for regional division: https://unstats.un.org/unsd/methodology/m49/
        africa = ['Sub Saharan Africa', 'Algeria','Egypt','Libya','Morocco','Sudan','Tunisia','Western Sahara',
           'British Indian Ocean Territory','Burundi','Comoros','Djibouti','Eritrea','Ethiopia','French Southern Territories','Kenya','Madagascar',
-          'Malawi','Mauritius','Mayotte','Mozambique','Reunion','Rwanda','Seychelles','Somalia','South Sudan','Uganda','Tanzania','Zambia','Zimbabwe'
-          'Angola','Cameroon','Central African Republic','Congo [Republic]','Congo [DRC]','Equatorial Guinea','Gabon','São Tomé and Príncipe'
-          'Botswana','Eswatini','Lesotho','Namibia','South Africa'
+          'Malawi','Mauritius','Mayotte','Mozambique','Reunion','Rwanda','Seychelles','Somalia','South Sudan','Uganda','Tanzania','Zambia','Zimbabwe',
+          'Angola','Cameroon','Central African Republic','Congo [Republic]','Congo [DRC]','Equatorial Guinea','Gabon','São Tomé and Príncipe',
+          'Botswana','Eswatini','Lesotho','Namibia','South Africa',
           'Benin','Burkina Faso','Cabo Verde',"Côte d'Ivoire",'Gambia','Ghana','Guinea','Guinea-Bissau','Liberia','Mali','Mauritania','Niger','Nigeria','Saint Helena','Senegal','Sierra Leone','Togo']
        asia = ['Asia','Kazakhstan','Kyrgyzstan','Tajikistan','Turkmenistan','Uzbekistan',
               'China','Hong Kong','Macau','South Korea','North Korea','Japan','Mongolia',
@@ -42,29 +40,99 @@ def map_function(cleaned_data, sector):
                      'Cayman Islands','Cuba','Curacao','Dominica','Dominican Republic','Grenada','Guadeloupe','Haiti','Jamaica',
                      'Martinique','Montserrat','Puerto Rico','Saint Kitts and Nevis','Saint Lucia','Saint Vincent and the Grenadines',
                      'Sint Maarten','Trinidad and Tobago','Turks and Caicos Islands','U.S. Virgin Islands',
-                     'Belize','Costa Rica','El Salvador','Guatemala','Hondura','Mexico','Nicaragua','Panama',
+                     'Belize','Costa Rica','El Salvador','Guatemala','Honduras','Mexico','Nicaragua','Panama',
                      'Argentina','Bolivia','Bouvet Island','Brazil','Chile','Columbia','Ecuador','Falkland Islands','French Guiana','Guyana',
-                     'Paraguay','Peru','South Georgia and the Sound Sandwich Islands','Suriname','Uruguay','Venezuela']
+                     'Paraguay','Peru','South Georgia and the South Sandwich Islands','Suriname','Uruguay','Venezuela']
        northern_america = ['North America',
                      'Bermuda','Canada','Greenland','Saint Pierre and Miquelon','United States']
        oceania = ['Australia','Christmas Island','Cocos [Keeling] Islands', 'Heard Island and McDonald Islands','New Zealand','Norfolk Island',
               'Fiji','New Caledonia','Papua New Guinea','Solomon Islands','Vanuatu',
-              'Guam','Kiribati','Marshall Islands','Micronesia','Nauru', 'Northern Mariana Islans','U.S. Minor Outlying Islands',
+              'Guam','Kiribati','Marshall Islands','Micronesia','Nauru', 'Northern Mariana Islands','U.S. Minor Outlying Islands',
               'American Samoa','Cook Islands','French Polynesia','Niue','Pitcairn','Samoa','Tokelau','Tonga','Tuvalu','Wallis and Futuna']
-       regions = [africa, asia, europe, latin_america, northern_america, oceania]
-       region_names = ['Africa','Asia','Europe','Latin America and the Caribbean', 'Northern America','Oceania']
 
-       ###Choropleth Heatmap
+       ###Conversion of Country Names to ISO3166 Standard. Reference: https://en.wikipedia.org/wiki/ISO_3166-1
+       ###Individual Countries
+
        compressed = cleaned_data[['Country/Region','Type','When']]
-       compressed['Country/Region'] = compressed['Country/Region'].replace('United Kingdom','United Kingdom of Great Britain and Northern Ireland')
-       compressed['Country/Region'] = compressed['Country/Region'].replace('United States','United States of America')
-       compressed['Country/Region'] = compressed['Country/Region'].replace('Turkey','Türkiye')
-       compressed['Country/Region'] = compressed['Country/Region'].replace('Congo [DRC]','Congo, Democratic Republic of the')
 
+       compressed['Country/Region'] = compressed['Country/Region'].replace('United States','United States of America')
+
+       compressed['Country/Region'] = compressed['Country/Region'].replace('Czech Republic', 'Czechia')
+       compressed['Country/Region'] = compressed['Country/Region'].replace('Republic of Moldova', 'Moldova, Republic of')
+       compressed['Country/Region'] = compressed['Country/Region'].replace('United Kingdom','United Kingdom of Great Britain and Northern Ireland')
+
+       compressed['Country/Region'] = compressed['Country/Region'].replace('Myanmar [Burma]','Myanmar')
+       compressed['Country/Region'] = compressed['Country/Region'].replace('Macau', 'Macao')
+       compressed['Country/Region'] = compressed['Country/Region'].replace('South Korea', 'Korea, Republic of')
+       compressed['Country/Region'] = compressed['Country/Region'].replace('North Korea', "Korea, Democratic People's Republic of")
+       compressed['Country/Region'] = compressed['Country/Region'].replace('Brunei', "Brunei Darussalam")
+       compressed['Country/Region'] = compressed['Country/Region'].replace('Laos', "Lao People's Democratic Republic")
+       compressed['Country/Region'] = compressed['Country/Region'].replace('Vietnam', "Viet Nam")
+       compressed['Country/Region'] = compressed['Country/Region'].replace('Iran', "Iran, Islamic Republic of")
+       compressed['Country/Region'] = compressed['Country/Region'].replace('Palestinian Territories', "Palestine")
+       compressed['Country/Region'] = compressed['Country/Region'].replace('Syria', "Syrian Arab Republic")
+       compressed['Country/Region'] = compressed['Country/Region'].replace('Turkey','Türkiye')
+
+       compressed['Country/Region'] = compressed['Country/Region'].replace('British Virgin Islands', 'Virgin Islands, British')
+       compressed['Country/Region'] = compressed['Country/Region'].replace('Curacao', 'Curaçao')
+       compressed['Country/Region'] = compressed['Country/Region'].replace('Sint Maarten', 'Sint Maarten (Dutch part)')
+       compressed['Country/Region'] = compressed['Country/Region'].replace('U.S. Virgin Islands', 'Virgin Islands, U.S.')
+       compressed['Country/Region'] = compressed['Country/Region'].replace('Bolivia', 'Bolivia, Plurinational State of')
+       compressed['Country/Region'] = compressed['Country/Region'].replace('Columbia', 'Colombia')
+       compressed['Country/Region'] = compressed['Country/Region'].replace('Falkland Islands', 'Falkland Islands (Malvinas)')
+       compressed['Country/Region'] = compressed['Country/Region'].replace('Venezuela', 'Venezuela, Bolivarian Republic of')
+
+       compressed['Country/Region'] = compressed['Country/Region'].replace('Reunion', 'Réunion')
+       compressed['Country/Region'] = compressed['Country/Region'].replace('Tanzania', 'Tanzania, United Republic of')
+       compressed['Country/Region'] = compressed['Country/Region'].replace('Congo [Republic]', 'Congo')
+       compressed['Country/Region'] = compressed['Country/Region'].replace('Congo [DRC]', 'Congo, Democratic Republic of the')
+       compressed['Country/Region'] = compressed['Country/Region'].replace('São Tomé and Príncipe', 'Sao Tome and Principe')
+       compressed['Country/Region'] = compressed['Country/Region'].replace('Saint Helena', 'Saint Helena, Ascension and Tristan da Cunha')
+
+       compressed['Country/Region'] = compressed['Country/Region'].replace('Cocos [Keeling] Islands', 'Cocos (Keeling) Islands')
+       compressed['Country/Region'] = compressed['Country/Region'].replace('Micronesia', 'Micronesia, Federated States of')
+       compressed['Country/Region'] = compressed['Country/Region'].replace('U.S. Minor Outlying Islands', 'United States Minor Outlying Islands')
+
+       ###Northern America
        northern_america_copy = list(map(lambda x: x.replace('United States', 'United States of America'), northern_america))
+       ###Europe
        europe_copy = list(map(lambda x: x.replace('Czech Republic', 'Czechia'), europe))
        europe_copy = list(map(lambda x: x.replace('Republic of Moldova', 'Moldova, Republic of'), europe_copy))
        europe_copy = list(map(lambda x: x.replace('United Kingdom', 'United Kingdom of Great Britain and Northern Ireland'), europe_copy))
+       ###Asia
+       asia_copy = list(map(lambda x: x.replace('Myanmar [Burma]', 'Myanmar'), asia))
+       asia_copy = list(map(lambda x: x.replace('Macau', 'Macao'), asia_copy))
+       asia_copy = list(map(lambda x: x.replace('South Korea', 'Korea, Republic of'), asia_copy))
+       asia_copy = list(map(lambda x: x.replace('North Korea', "Korea, Democratic People's Republic of"), asia_copy))
+       asia_copy = list(map(lambda x: x.replace('Brunei', "Brunei Darussalam"), asia_copy))
+       asia_copy = list(map(lambda x: x.replace('Laos', "Lao People's Democratic Republic"), asia_copy))
+       asia_copy = list(map(lambda x: x.replace('Vietnam', "Viet Nam"), asia_copy))
+       asia_copy = list(map(lambda x: x.replace('Iran', "Iran, Islamic Republic of"), asia_copy))
+       asia_copy = list(map(lambda x: x.replace('Palestinian Territories', "Palestine"), asia_copy))
+       asia_copy = list(map(lambda x: x.replace('Syria', "Syrian Arab Republic"), asia_copy))
+       asia_copy = list(map(lambda x: x.replace('Turkey','Türkiye'), asia_copy))
+       ###Latin America
+       latin_america_copy = list(map(lambda x: x.replace('British Virgin Islands', 'Virgin Islands, British'), latin_america))
+       latin_america_copy = list(map(lambda x: x.replace('Curacao', 'Curaçao'), latin_america_copy))
+       latin_america_copy = list(map(lambda x: x.replace('Sint Maarten', 'Sint Maarten (Dutch part)'), latin_america_copy))
+       latin_america_copy = list(map(lambda x: x.replace('U.S. Virgin Islands', 'Virgin Islands, U.S.'), latin_america_copy))
+       latin_america_copy = list(map(lambda x: x.replace('Bolivia', 'Bolivia, Plurinational State of'), latin_america_copy))
+       latin_america_copy = list(map(lambda x: x.replace('Columbia', 'Colombia'), latin_america_copy))
+       latin_america_copy = list(map(lambda x: x.replace('Falkland Islands', 'Falkland Islands (Malvinas)'), latin_america_copy))
+       latin_america_copy = list(map(lambda x: x.replace('Venezuela', 'Venezuela, Bolivarian Republic of'), latin_america_copy))
+       ###Africa
+       africa_copy = africa.copy()
+       africa_copy = list(map(lambda x: x.replace('Reunion', 'Réunion'), africa_copy))
+       africa_copy = list(map(lambda x: x.replace('Tanzania', 'Tanzania, United Republic of'), africa_copy))
+       africa_copy = list(map(lambda x: x.replace('Congo [Republic]', 'Congo'), africa_copy))
+       africa_copy = list(map(lambda x: x.replace('Congo [DRC]', 'Congo, Democratic Republic of the'), africa_copy))
+       africa_copy = list(map(lambda x: x.replace('São Tomé and Príncipe', 'Sao Tome and Principe'), africa_copy))
+       africa_copy = list(map(lambda x: x.replace('Saint Helena', 'Saint Helena, Ascension and Tristan da Cunha'), africa_copy))
+       ###Oceania
+       oceania_copy = oceania.copy()
+       oceania_copy = list(map(lambda x: x.replace('Cocos [Keeling] Islands', 'Cocos (Keeling) Islands'), oceania_copy))
+       oceania_copy = list(map(lambda x: x.replace('Micronesia', 'Micronesia, Federated States of'), oceania_copy))
+       oceania_copy = list(map(lambda x: x.replace('U.S. Minor Outlying Islands', 'United States Minor Outlying Islands'), oceania_copy))
        #Making DataFrame
        compressed['Country/Region'] = compressed['Country/Region'].str.upper()
        unique_countries = compressed['Country/Region'].unique()
@@ -89,6 +157,42 @@ def map_function(cleaned_data, sector):
                             for sub_country in europe_copy[1:]:
                                    sub_country = sub_country.upper()
                                    dataframe = compressed[np.logical_and(compressed['Country/Region']=='EUROPE', compressed['When']==time)]
+                                   number = dataframe.shape[0]
+                                   country_list_out.append(sub_country)
+                                   time_list_out.append(time)
+                                   number_list_out.append(number)
+                                   iso_alpha_list_out.append(countries_by_apolitical_name[f'{sub_country}'].alpha3)
+                     elif country == 'ASIA':
+                            for sub_country in asia_copy[1:]:
+                                   sub_country = sub_country.upper()
+                                   dataframe = compressed[np.logical_and(compressed['Country/Region']=='ASIA', compressed['When']==time)]
+                                   number = dataframe.shape[0]
+                                   country_list_out.append(sub_country)
+                                   time_list_out.append(time)
+                                   number_list_out.append(number)
+                                   iso_alpha_list_out.append(countries_by_apolitical_name[f'{sub_country}'].alpha3)
+                     elif country == 'LATIN AMERICA':
+                            for sub_country in latin_america_copy[1:]:
+                                   sub_country = sub_country.upper()
+                                   dataframe = compressed[np.logical_and(compressed['Country/Region']=='LATIN AMERICA', compressed['When']==time)]
+                                   number = dataframe.shape[0]
+                                   country_list_out.append(sub_country)
+                                   time_list_out.append(time)
+                                   number_list_out.append(number)
+                                   iso_alpha_list_out.append(countries_by_apolitical_name[f'{sub_country}'].alpha3)
+                     elif country == 'SUB SAHARAN AFRICA':
+                            for sub_country in africa_copy[1:]:
+                                   sub_country = sub_country.upper()
+                                   dataframe = compressed[np.logical_and(compressed['Country/Region']=='SUB SAHARAN AFRICA', compressed['When']==time)]
+                                   number = dataframe.shape[0]
+                                   country_list_out.append(sub_country)
+                                   time_list_out.append(time)
+                                   number_list_out.append(number)
+                                   iso_alpha_list_out.append(countries_by_apolitical_name[f'{sub_country}'].alpha3)
+                     elif country == 'OCEANIA':
+                            for sub_country in oceania_copy[1:]:
+                                   sub_country = sub_country.upper()
+                                   dataframe = compressed[np.logical_and(compressed['Country/Region']=='OCEANIA', compressed['When']==time)]
                                    number = dataframe.shape[0]
                                    country_list_out.append(sub_country)
                                    time_list_out.append(time)
