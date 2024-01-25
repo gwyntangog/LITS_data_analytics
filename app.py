@@ -1,8 +1,8 @@
 # app.py
-from cleaning_functions.clean_data import clean_data
-from cleaning_functions.map_function import map_function
-from cleaning_functions.histogram_function import histogram_function
-from cleaning_functions.pie_function import pie_function
+from functions.clean_data import clean_data
+from functions.map_function import map_function
+from functions.histogram_function import histogram_function
+from functions.pie_function import pie_function
 import pandas as pd
 from dash import Dash, dcc, html, Input, Output
 import matplotlib.pyplot as plt
