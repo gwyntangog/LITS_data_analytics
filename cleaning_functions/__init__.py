@@ -4,3 +4,4 @@ from .sector_filter import sector_filter
 from .histogram_function import histogram_function
 from .pie_function import pie_function
 from .regional_division import regional_division
+from .iso3166_conversion_function import iso3166_conversion_function
