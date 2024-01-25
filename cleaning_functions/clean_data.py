@@ -14,13 +14,8 @@ def clean_data(filename,sheetname = "Internal Reporting Form"):
        data = data.rename(columns={"Email Address": "Email"})
        #3: Individual Name
        data = data.rename(columns={"Individual name (first name and surname)": "Individual Name"})
-       data['Individual Name'] = data['Individual Name'].str.title()
-       data['Individual Name'] = data['Individual Name'].replace('-', None)
        #4: Organisation Name
        data = data.rename(columns={'Organisation name (if it was an individual, write "N/A")': "Organisation Name"})
-       data['Organisation Name'] = data['Organisation Name'].fillna("Individual")
-       data['Organisation Name'] = data['Organisation Name'].str.lstrip()
-       data['Organisation Name'] = data['Organisation Name'].str.rstrip()
        #5: Sectors
        data = data.rename(columns={'Sectors that the organisation works in (Mark all that apply, and then mark "Other" to provide more details if applicable.)': "Sectors"})
        #6: Type
