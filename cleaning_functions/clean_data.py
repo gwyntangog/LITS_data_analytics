@@ -53,4 +53,4 @@ def clean_data(filename,sheetname = "Internal Reporting Form"):
        data = data.rename(columns={'Were there any conclusions or takeaways from the conversation': "Conclusions/Takeaways"})
        #Exporting
        cleaned_data = data.copy()
-       return data
+       return cleaned_data

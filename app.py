@@ -18,7 +18,7 @@ regions = ['All Regions', 'Africa','Asia','Europe','Latin America and the Caribb
 pie_dividers = ['Type','Level of Support']
 sectors = ["All Sectors", 'Transparency and accountability / open government','Human rights / humanitarian', 'Philanthropy', 'Environmental justice', 'Civic Tech', 'Health', 'Sex worker rights', 'Gender-based violence',
            'Digital Security', 'Mental Health','Legal Empowerment','Communications','Gender','Racial Justice','Migration Justice','Domestic workers rights']
-years = ["2021", "2022", "2023"]
+years = ["2023", "2022", "2021"]
 
 #App layout
 app.layout = html.Div(
@@ -195,21 +195,22 @@ app.layout = html.Div(
     Input("year2", "value"),
     Input("year3", "value")
 )
+
 def update_charts(region, pie_div, sector, year1, year2, year3):
     #Getting data by year
     data = clean_data(f"{year1}.xlsx")
     #Histogram function
-    region_histogram_figure = histogram_function(data, region)
+    region_histogram_figure = histogram_function(data, region, year1)
     #Getting data by year
     data = clean_data(f"{year2}.xlsx")
     #Pie function
-    pie_divided_figure = pie_function(data,pie_div)
+    pie_divided_figure = pie_function(data,pie_div, year2)
     #Getting data by year
     data = clean_data(f"{year3}.xlsx")
     #Map function
     if sector == "All Sectors":
         sector = None
-    sector_map_figure = map_function(data, sector)
+    sector_map_figure = map_function(data, sector,year3)
     return region_histogram_figure, pie_divided_figure, sector_map_figure
 
 if __name__ == "__main__":
