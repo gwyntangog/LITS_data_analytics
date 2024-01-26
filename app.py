@@ -37,10 +37,12 @@ app.layout = html.Div(
     #Header
     children=[
         html.Div([
-            html.Img(src=dash.get_asset_url('logo.png'), className = "logo"),
+            html.Div([dcc.Link(href='https://www.theengineroom.org/',
+                               children = [html.Img(src=dash.get_asset_url('logo.png'), className = "logo")])]),
             html.H1(children="LiTS Data Analytics Dashboard", className = "header-title"),
             html.P(
                 children=(
+
                     "Analyze the distribution of LiTS across time and space! "
                     "Filter by sector, region, and more!"
                 ),
