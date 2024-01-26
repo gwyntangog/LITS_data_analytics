@@ -7,8 +7,8 @@ This project was made to analyze time-series data for The Engine Room's Light To
 Adding data:
 
 1. For privacy purposes:
-  1. Delete all sheets from the Excel file excluding "Internal Reporting Form".
-  2. Remove all information under Individual Names and Organization Names (Columns C and D).
+    1. Delete all sheets from the Excel file excluding "Internal Reporting Form".
+    2. Remove all information under Individual Names and Organization Names (Columns C and D).
 2. Rename the file into the year only. (i.e. "Year.xlsx").
 3. Make sure the file is in the root directory.
 
