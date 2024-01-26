@@ -5,6 +5,7 @@ from functions.histogram_function import histogram_function
 from functions.pie_function import pie_function
 import pandas as pd
 from dash import Dash, dcc, html, Input, Output
+import dash
 import matplotlib.pyplot as plt
 import plotly.express as px
 import os
@@ -36,6 +37,7 @@ app.layout = html.Div(
     #Header
     children=[
         html.Div([
+            html.Img(src=dash.get_asset_url('logo.png'), className = "logo"),
             html.H1(children="LiTS Data Analytics Dashboard", className = "header-title"),
             html.P(
                 children=(
