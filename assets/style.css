@@ -14,11 +14,14 @@ body {
 }
 
 .header {
-    background-color: #222222;
+    background-image: url('https://www.theengineroom.org/wp-content/uploads/2016/09/ER_Texture_HEADER_BG_1_0G.jpg');
+    background-size: cover;
     height: 288px;
     padding-bottom: 20px;
+    background-repeat: no-repeat;
+    background-color: grey;
+    background-blend-mode: multiply;
 }
-
 
 .header-title {
     color: #FFFFFF;
