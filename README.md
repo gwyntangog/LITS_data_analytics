@@ -9,7 +9,7 @@ Adding data:
 1. For privacy purposes:
     1. Delete all sheets from the Excel file excluding "Internal Reporting Form".
     2. Remove all information under Individual Names and Organization Names (Columns C and D).
-2. Rename the file into the year only. (i.e. "2023.xlsx").
+2. Rename the file into the year only. (e.g. "2023.xlsx").
 3. Make sure the file is in the root directory.
 
 ## Deployment
