@@ -14,7 +14,7 @@ body {
 }
 
 .header {
-    background-image: url('https://www.theengineroom.org/wp-content/uploads/2016/09/ER_Texture_HEADER_BG_1_0G.jpg');
+    background-image: url('texture_header.jpg');
     background-size: cover;
     height: 288px;
     padding-bottom: 20px;
