@@ -11,9 +11,6 @@ Adding data:
     2. Rename the file into the year only. (i.e. "Year.xlsx").
     3. Make sure the file is in the root directory.
 
-Editing Functions When New Data is Added:
-    1. In app.py, under dropdown options, add the new year to the list of years.
-
 ## Deployment
 
 This website is deployed on Render at https://lits-analyst.onrender.com/ .

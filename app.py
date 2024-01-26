@@ -7,18 +7,29 @@ import pandas as pd
 from dash import Dash, dcc, html, Input, Output
 import matplotlib.pyplot as plt
 import plotly.express as px
+import os
 
 #Initialize the app
 app = Dash(__name__,)
 server = app.server
 app.title = "LiTS Data Analyst"
 
+#Checking number of years to protect from updates
+years = []
+directory = os.getcwd()
+for file in os.listdir(directory):
+    filename = os.fsdecode(file)
+    if filename.endswith(".xlsx"):
+        list_name = filename[:-5]
+        years.append(list_name)
+years.sort(reverse = True)
+default_year = years[0]
+
 #Dropdown options
 regions = ['All Regions', 'Africa','Asia','Europe','Latin America and the Caribbean', 'Northern America','Oceania']
 pie_dividers = ['Type','Level of Support']
 sectors = ["All Sectors", 'Transparency and accountability / open government','Human rights / humanitarian', 'Philanthropy', 'Environmental justice', 'Civic Tech', 'Health', 'Sex worker rights', 'Gender-based violence',
            'Digital Security', 'Mental Health','Legal Empowerment','Communications','Gender','Racial Justice','Migration Justice','Domestic workers rights']
-years = ["2023", "2022", "2021"]
 
 #App layout
 app.layout = html.Div(
@@ -61,7 +72,7 @@ app.layout = html.Div(
                             {"label": year1, "value": year1}
                             for year1 in years
                         ],
-                        value="2023",
+                        value=default_year,
                         clearable=False,
                         className="dropdown",
                     ),
@@ -110,7 +121,7 @@ app.layout = html.Div(
                         {"label": year2, "value": year2}
                         for year2 in years
                     ],
-                    value="2023",
+                    value=default_year,
                     clearable=False,
                     className="dropdown",
                 ),
@@ -159,7 +170,7 @@ app.layout = html.Div(
                         {"label": year3, "value": year3}
                         for year3 in years
                     ],
-                    value="2023",
+                    value=default_year,
                     clearable=False,
                     className="dropdown",
                 ),
