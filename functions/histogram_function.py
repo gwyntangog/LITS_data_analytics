@@ -11,6 +11,8 @@ def histogram_function(data, region, year):
     import pandas as pd
     import plotly.express as px
     from functions.regional_division import regional_division
+    import matplotlib.pyplot as plt
+    import plotly.graph_objs as go
     ####Regional Divisions
     africa, asia, europe, latin_america, northern_america, oceania = regional_division()
     region_mapping = {'Africa': africa, 'Asia': asia, 'Europe': europe, 'Latin America and the Caribbean': latin_america, 'Northern America': northern_america, 'Oceania': oceania}
@@ -20,6 +22,7 @@ def histogram_function(data, region, year):
     else:
         filtered_data = data.loc[data['Country/Region'].isin(region_mapping[region])]
         filtered_data = filtered_data.dropna(subset = ['Country/Region'])
-    region_histogram_figure = px.histogram(filtered_data,x="When", nbins = 12, title = f"Distribution of Clients in {region} Over Time ({year})")
-    region_histogram_figure = region_histogram_figure.update_layout(yaxis_title = "Count")
+    filtered_data['When'] = pd.to_datetime(filtered_data['When'])
+    region_histogram_figure = go.Figure(go.Histogram(x=filtered_data["When"], nbinsx = 12))
+    region_histogram_figure = region_histogram_figure.update_layout(yaxis_title = "Count", title = f"Distribution of Partners in {region} Over Time ({year})", xaxis = {"title":"Month","tickformat" : '%B', 'nticks':12, 'tickangle':45})
     return region_histogram_figure
