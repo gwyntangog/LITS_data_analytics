@@ -16,6 +16,12 @@ Adding data:
 
 This website is deployed on Render at https://lits-analyst.onrender.com/ .
 
+Deployment details:
+
+1. Under Environment, make sure the python version is 3.10.13 (Key: PYTHON_VERSION, Value: 3.10.13).
+2. Under Settings, set Build Command as "$ pip install -r requirements.txt" and Start Command as "$ gunicorn app:server" . Do not include quotation marks.
+3. To deploy, click on the "Manual Deploy" dropdown and select "Deploy latest commit".
+
 ## Contacts
 This code was authored by Gwyneth Margaux Tangog (MIT SB '26). <br />
 MIT email: gwynt@mit.edu <br />
