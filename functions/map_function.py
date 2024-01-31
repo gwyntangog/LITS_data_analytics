@@ -162,7 +162,7 @@ def map_function(cleaned_data, sector, year):
        }
        choropleth_data = pd.DataFrame(final_dict)
 
-       #Plotting
+       #Title
        maximum = choropleth_data['Number'].max()
        if sector:
               choropleth_title = f'LiTS per Country ({sector}) in {year}'
@@ -172,6 +172,10 @@ def map_function(cleaned_data, sector, year):
               choropleth_title = f"No LiTS in {sector} in {year}"
        else:
               pass
+       #Plotting
+       choropleth_data['Time'] = pd.to_datetime(choropleth_data['Time'])
+       choropleth_data = choropleth_data.sort_values('Time', ascending=True)
+       choropleth_data['Time'] = choropleth_data['Time'].dt.strftime('%B')
        fig = px.choropleth(data_frame = choropleth_data, locations='ISO Alpha', color='Number',animation_frame = 'Time',hover_name='Country',
                             projection='natural earth', title=choropleth_title,color_continuous_scale=px.colors.sequential.Reds, range_color = (0,maximum))
        return fig

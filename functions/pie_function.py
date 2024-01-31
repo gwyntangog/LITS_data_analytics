@@ -20,5 +20,5 @@ def pie_function(data, pie_div, year):
         count_list.append(count)
         percentage = round(count/total*100,1)
         label_list.append(f"{i} ({percentage}%)")
-    pie_divided_figure = px.pie(values = count_list, names = label_list, title = f"Distribution of Clients by {pie_div} in {year}")
+    pie_divided_figure = px.pie(values = count_list, names = label_list, title = f"Distribution of Partners by {pie_div} in {year}")
     return pie_divided_figure
